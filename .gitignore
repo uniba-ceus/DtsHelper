@@ -1,0 +1,12 @@
+/.vs
+/.svn
+/TestResults
+/tests/DtsHelper.Test.Scripts/*.dbmdl
+/tests/DtsHelper.Test.Scripts/*.jfm
+/tests/DtsHelper.Test.Scripts/*.user
+*.suo
+*.user
+_ReSharper.*
+bin/
+obj/
+packages

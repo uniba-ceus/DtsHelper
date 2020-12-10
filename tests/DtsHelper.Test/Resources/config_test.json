@@ -1,0 +1,23 @@
+{
+  "Settings": {
+    "DtsAppName": "DtsHelperTestSsis",
+    "DtsSwitchParam": "Variant",
+    "DtsRootDirectory": "./../../../../DtsHelper.Test.Ssis",
+    "DtsNamespaceDirectories": [ "Variant1" ],
+    "DtsActiveTasksOnly": true,
+    "SqlRootDirectory": "./../../../../DtsHelper.Test.Scripts",
+    "SqlRecursiveFileSearch": true,
+    "SqlFileFilterRegex": "[.]sql$",
+    "SqlMappingPatterns": [ "<Namespace>/<Package>/<Task>.sql", "<Package>/<Task>.sql", "<Namespace>/<Task>.sql", "<Task>.sql", "<ProjectParam:Uni>/<Package>/<Task>.sql" ]
+  },
+  "Commands": {
+    "SetFileConnectionToVariable": true,
+    "DeleteVariables": false,
+    "CreateVariables": false,
+    "ConvertToUTF8": true,
+    "InjectVariables": true,
+    "ChangeAppName": true,
+    "FormatSql": true,
+    "InjectDirect": true
+  }
+}

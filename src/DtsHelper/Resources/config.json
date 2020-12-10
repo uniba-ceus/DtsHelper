@@ -1,0 +1,40 @@
+{
+  "Settings": {
+    "DtsAppName": "",
+    "DtsRootDirectory": "",
+    "DtsNamespaceDirectories": [],
+    "DtsSwitchParam": "",
+    "DtsActiveTasksOnly": false,
+    "SqlRootDirectory": "",
+    "SqlRecursiveFileSearch": true,
+    "SqlFileFilterRegex": "[.]sql$",
+    "SqlMappingPatterns": [ "<Namespace>/<Package>/<Task>.sql", "<Package>/<Task>.sql", "<Namespace>/<Task>.sql", "<Task>.sql" ]
+  },
+  "Commands": {
+    "SetFileConnectionToVariable": true,
+    "DeleteVariables": true,
+    "CreateVariables": true,
+    "ConvertToUTF8": true,
+    "InjectVariables": true,
+    "ChangeAppName": true,
+    "FormatSql": false,
+    "InjectDirect": false
+  },
+	"SqlFormatterOptions":
+	{
+		"NewClauseLineBreaks":  1,
+		"ExpandBetweenConditions":  true,
+		"ExpandBooleanExpressions": true,
+		"ExpandCaseStatements":  true,
+		"ExpandCommaLists":  true,
+		"ExpandInLists":  true,
+		"IndentString": "\t",
+		"MaxLineWidth":  999,
+		"SpaceAfterExpandedComma": false,
+		"SpacesPerTab":  4,
+		"KeywordStandardization":  true,
+		"NewStatementLineBreaks":  2,
+		"TrailingCommas":  true,
+		"UppercaseKeywords": true
+	}
+}
