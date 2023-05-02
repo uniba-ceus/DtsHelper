@@ -1,7 +1,6 @@
 {
   "Settings": {
     "DtsAppName": "DtsHelperTestSsis",
-    "DtsSwitchParam": "Variant",
     "DtsRootDirectory": "./../../../../DtsHelper.Test.Ssis",
     "DtsNamespaceDirectories": [ "Variant1" ],
     "DtsActiveTasksOnly": true,

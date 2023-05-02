@@ -168,7 +168,8 @@ namespace DtsHelper.Core
         ///     Creates for each SqlTask variables for each variant. Namespace will be determined from directory name.
         /// </summary>
         /// <remarks>
-        ///SwitchParam determines which SSIS parameter will be used for identification of variable. If not SwitchParam is defined a generic one will be used.
+        ///     SwitchParam determines which SSIS parameter will be used for identification of variable. If not SwitchParam is
+        ///     defined a generic one will be used.
         /// </remarks>
         public void CreateVariables()
         {
@@ -193,7 +194,7 @@ namespace DtsHelper.Core
             foreach (var packageContext in _packageContexts)
             {
                 var package = packageContext.PackageXML;
-                _log.Info("Paket '" + packageContext.CanonicalPath + "' wird bearbeitet.");
+                _log.Info("CreateVariables: Paket '" + packageContext.CanonicalPath + "' wird bearbeitet.");
 
                 var taskHosts = GetTaskHosts(package, _config.Settings.DtsActiveTasksOnly);
 
@@ -203,7 +204,7 @@ namespace DtsHelper.Core
                     {
                         if (executeSQLTask.SqlStatementSourceType == SqlStatementSourceType.Variable)
                         {
-                            _log.Info("Variablen für Task '" + taskHost.Name + "' erstellen.");
+                            _log.Info("CreateVariables: Variablen für Task '" + taskHost.Name + "' erstellen.");
 
                             var expression = string.Empty;
 
@@ -215,7 +216,7 @@ namespace DtsHelper.Core
                                 // variable must be generated
                                 taskHost.Variables.Add(variableName, false, namespaceValue, "");
 
-                                _log.Info("Variable '" + variableName + "' mit Namespace '" + namespaceValue + "' erstellt.");
+                                _log.Info("CreateVariables: Variable '" + variableName + "' mit Namespace '" + namespaceValue + "' erstellt.");
 
                                 // define expression which selected correct variant.                                       
                                 expression += "(" + switchParam + " == \"" + namespaceValue + "\")? \"" + namespaceValue + "::" + variableName + "\":";
@@ -224,7 +225,7 @@ namespace DtsHelper.Core
                             expression += "\"\"";
 
                             taskHost.SetExpression("SqlStatementSource", expression);
-                            _log.Info("Task '" + taskHost.Name + "': Expression wurde gesetzt.");
+                            _log.Info("CreateVariables: Task '" + taskHost.Name + "': Expression wurde gesetzt.");
                         }
                     }
                 }
@@ -243,22 +244,22 @@ namespace DtsHelper.Core
             foreach (var packageContext in _packageContexts)
             {
                 var package = packageContext.PackageXML;
-                _log.Info("Paket '" + packageContext.CanonicalPath + "' wird bearbeitet.");
+                _log.Info("DeleteVariables: Paket '" + packageContext.CanonicalPath + "' wird bearbeitet.");
 
                 var taskHosts = GetTaskHosts(package, _config.Settings.DtsActiveTasksOnly);
 
                 foreach (var taskHost in taskHosts)
                 {
-                    _log.Info("Untersuche Task '" + taskHost.Name + "'.");
+                    _log.Info("DeleteVariables: Untersuche Task '" + taskHost.Name + "'.");
 
                     if (taskHost.InnerObject is IDTSExecuteSQL executeSQLTask)
                     {
-                        _log.Info("... ist ein ExecuteSQL-Task.");
+                        _log.Info("DeleteVariables: ... ist ein ExecuteSQL-Task.");
 
                         // only tasks with Variable input
                         if (executeSQLTask.SqlStatementSourceType == SqlStatementSourceType.Variable)
                         {
-                            _log.Info("Variablenlöschung beginnt.");
+                            _log.Info("DeleteVariables: Variablenlöschung beginnt.");
 
                             foreach (var namespaceValue in _config.Settings.DtsNamespaceDirectories)
                             {
@@ -269,19 +270,19 @@ namespace DtsHelper.Core
                                     {
                                         taskHost.Variables.Remove(variable);
 
-                                        _log.Info("Variable '" + variable.Namespace + "::" + variable.Name + "' im Task '" + taskHost.Name + "' gelöscht.");
+                                        _log.Info("DeleteVariables: Variable '" + variable.Namespace + "::" + variable.Name + "' im Task '" + taskHost.Name + "' gelöscht.");
                                     }
                                 }
                             }
                         }
                         else
                         {
-                            _log.Info("... hat KEIN Variable-Input, sondern " + executeSQLTask.SqlStatementSourceType + ".");
+                            _log.Info("DeleteVariables: ... hat KEIN Variable-Input, sondern " + executeSQLTask.SqlStatementSourceType + ".");
                         }
                     }
                     else
                     {
-                        _log.Info("... ist KEIN ExecuteSQL-Task.");
+                        _log.Info("DeleteVariables: ... ist KEIN ExecuteSQL-Task.");
                     }
                 }
             }
@@ -337,7 +338,7 @@ namespace DtsHelper.Core
             foreach (var packageContext in _packageContexts)
             {
                 var package = packageContext.PackageXML;
-                _log.Info("Paket '" + packageContext.CanonicalPath + "' wird bearbeitet.");
+                _log.Info("InjectDirect: Paket '" + packageContext.CanonicalPath + "' wird bearbeitet.");
 
                 var taskHosts = GetTaskHosts(package, _config.Settings.DtsActiveTasksOnly);
 
@@ -358,24 +359,24 @@ namespace DtsHelper.Core
 
                             if (sqlScriptPath != null)
                             {
-                                _log.Info($"Skript für Task '{taskHost.Name}' gefunden = '{sqlScriptPath}'.");
+                                _log.Info($"InjectDirect: Skript für Task '{taskHost.Name}' gefunden = '{sqlScriptPath}'.");
 
                                 var sqlScript = sqlScripts[sqlScriptPath];
                                 var oldValue = executeSQLTask.SqlStatementSource ?? "";
 
                                 if (!oldValue.Equals(sqlScript, StringComparison.Ordinal))
                                 {
-                                    _log.Info("Aktueller Taskinhalt ist nicht mit Skript identisch und wird ersetzt.");
+                                    _log.Info("InjectDirect: Aktueller Taskinhalt ist nicht mit Skript identisch und wird ersetzt.");
                                     executeSQLTask.SqlStatementSource = sqlScript;
                                 }
                                 else
                                 {
-                                    _log.Info("Aktueller Taskinhalt ist mit Skriptinhalt identisch. Keine Ersetzung.");
+                                    _log.Info("InjectDirect: Aktueller Taskinhalt ist mit Skriptinhalt identisch. Keine Ersetzung.");
                                 }
                             }
                             else
                             {
-                                _log.Warn($"Kein Skript für Task '{taskHost.Name}' gefunden!");
+                                _log.Warn($"InjectDirect: Kein Skript für Task '{taskHost.Name}' gefunden!");
                             }
                         }
                     }
@@ -399,62 +400,44 @@ namespace DtsHelper.Core
             foreach (var packageContext in _packageContexts)
             {
                 var package = packageContext.PackageXML;
-                _log.Info("Paket '" + packageContext.CanonicalPath + "' wird bearbeitet.");
+                _log.Info("InjectVariables: Paket '" + packageContext.CanonicalPath + "' wird bearbeitet.");
 
-                var taskHosts = GetTaskHosts(package, _config.Settings.DtsActiveTasksOnly);
-
-                foreach (var taskHost in taskHosts)
+                foreach (var variable in package.Variables)
                 {
-                    if (taskHost.InnerObject is IDTSExecuteSQL executeSQLTask)
+                    // only apply changes to variables with configured namespace.
+                    var isConfiguredNamespace = _config.Settings.DtsNamespaceDirectories.Any(n => n.Equals(variable.Namespace));
+
+                    if (isConfiguredNamespace)
                     {
-                        // task must have Variable input
-                        if (executeSQLTask.SqlStatementSourceType == SqlStatementSourceType.Variable)
+                        _log.Info($"InjectVariables: Suche Skript für Variable '{variable.Namespace}::{variable.Name}'.");
+
+                        var sqlScriptPath = SearchSqlScriptPath(sqlScripts, new VariableContext
                         {
-                            // OPTION: Perhaps read variables from package instead of SqlTask?
-                            //var variables = package.Variables;
+                            Variable = variable,
+                            Package = package,
+                            ProjectParams = projectParams
+                        });
 
-                            _log.Debug("Durchlaufe alle Variablen im Task '" + taskHost.Name + "'.");
+                        if (sqlScriptPath != null)
+                        {
+                            _log.Info($"InjectVariables: Skript für Variable '{variable.Namespace}::{variable.Name}' gefunden = '{sqlScriptPath}'.");
 
-                            foreach (var variable in taskHost.Variables)
+                            var sqlScript = sqlScripts[sqlScriptPath];
+                            var oldValue = (string)variable.Value ?? "";
+
+                            if (!oldValue.Equals(sqlScript, StringComparison.Ordinal))
                             {
-                                // only apply changes to variables with configured namespace.
-                                var isConfiguredNamespace = _config.Settings.DtsNamespaceDirectories.Any(n => n.Equals(variable.Namespace));
-
-                                if (isConfiguredNamespace)
-                                {
-                                    _log.Debug($"Suche Skript für Variable '{variable.Namespace}::{variable.Name}'.");
-
-                                    var sqlScriptPath = SearchSqlScriptPath(sqlScripts, new VariableContext
-                                    {
-                                        Variable = variable,
-                                        Package = package,
-                                        TaskHost = taskHost,
-                                        ProjectParams = projectParams
-                                    });
-
-                                    if (sqlScriptPath != null)
-                                    {
-                                        _log.Info($"Skript für Variable '{variable.Namespace}::{variable.Name}' gefunden = '{sqlScriptPath}'.");
-
-                                        var sqlScript = sqlScripts[sqlScriptPath];
-                                        var oldValue = (string) variable.Value ?? "";
-
-                                        if (!oldValue.Equals(sqlScript, StringComparison.Ordinal))
-                                        {
-                                            _log.Info("Aktueller Variableninhalt ist nicht mit Skript identisch und wird ersetzt.");
-                                            variable.Value = sqlScript;
-                                        }
-                                        else
-                                        {
-                                            _log.Info("Aktueller Variableninhalt ist mit Skriptinhalt identisch. Keine Ersetzung.");
-                                        }
-                                    }
-                                    else
-                                    {
-                                        _log.Warn($"Kein Skript für Variable '{variable.Namespace}::{variable.Name}' gefunden!");
-                                    }
-                                }
+                                _log.Info("InjectVariables: Aktueller Variableninhalt ist nicht mit Skript identisch und wird ersetzt.");
+                                variable.Value = sqlScript;
                             }
+                            else
+                            {
+                                _log.Info("InjectVariables: Aktueller Variableninhalt ist mit Skriptinhalt identisch. Keine Ersetzung.");
+                            }
+                        }
+                        else
+                        {
+                            _log.Warn($"InjectVariables: Kein Skript für Variable '{variable.Namespace}::{variable.Name}' gefunden!");
                         }
                     }
                 }
@@ -614,7 +597,7 @@ namespace DtsHelper.Core
             foreach (var packageContext in _packageContexts)
             {
                 var package = packageContext.PackageXML;
-                _log.Info("Paket '" + packageContext.CanonicalPath + "' wird bearbeitet.");
+                _log.Info("SetFileConToVariable: Paket '" + packageContext.CanonicalPath + "' wird bearbeitet.");
 
                 var taskHosts = GetTaskHosts(package, _config.Settings.DtsActiveTasksOnly);
 
@@ -657,7 +640,7 @@ namespace DtsHelper.Core
 
             pattern = pattern.Replace("<Namespace>", context.Variable.Namespace);
             pattern = pattern.Replace("<Package>", context.Package.Name);
-            pattern = pattern.Replace("<Task>", context.TaskHost.Name);
+            pattern = pattern.Replace("<Variable>", context.Variable.Name);
             foreach (var param in context.ProjectParams)
             {
                 pattern = pattern.Replace($"<ProjectParam:{param.Name}>", param.Value);
@@ -921,16 +904,24 @@ namespace DtsHelper.Core
         {
             Trace.TraceInformation("SearchSqlScriptPath - BEGIN");
 
-            foreach (var pattern in _config.Settings.SqlMappingPatterns)
+            var variablePatterns = _config.Settings.SqlMappingPatterns.Where(p => p.Contains("<Variable>")).ToList();
+            if (variablePatterns.Count == 0)
             {
-                var searchPath = BuildSearchPath(pattern, context);
-                foreach (var scriptPath in sqlScripts.Keys)
+                _log.Error("No SqlMappingPattern for <Variable> found");
+            }
+            else
+            {
+                foreach (var pattern in variablePatterns)
                 {
-                    if (string.Equals(scriptPath, searchPath, StringComparison.CurrentCultureIgnoreCase))
+                    var searchPath = BuildSearchPath(pattern, context);
+                    foreach (var scriptPath in sqlScripts.Keys)
                     {
-                        _log.Debug(
-                            $"SQL Datei {scriptPath} für Variable '{context.Variable.Namespace}::{context.Variable.Name}' über Pattern {pattern} gefunden.");
-                        return scriptPath;
+                        if (string.Equals(scriptPath, searchPath, StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            _log.Debug(
+                                $"SQL Datei {scriptPath} für Variable '{context.Variable.Namespace}::{context.Variable.Name}' über Pattern {pattern} gefunden.");
+                            return scriptPath;
+                        }
                     }
                 }
             }
@@ -951,15 +942,23 @@ namespace DtsHelper.Core
         {
             Trace.TraceInformation("SearchSqlScriptPath - BEGIN");
 
-            foreach (var pattern in _config.Settings.SqlMappingPatterns)
+            var taskPatterns = _config.Settings.SqlMappingPatterns.Where(p => p.Contains("<Task>")).ToList();
+            if (taskPatterns.Count == 0)
             {
-                var searchPath = BuildSearchPath(pattern, context);
-                foreach (var scriptPath in sqlScripts.Keys)
+                _log.Error("No SqlMappingPattern for <Task> found");
+            }
+            else
+            {
+                foreach (var pattern in _config.Settings.SqlMappingPatterns)
                 {
-                    if (string.Equals(scriptPath, searchPath, StringComparison.CurrentCultureIgnoreCase))
+                    var searchPath = BuildSearchPath(pattern, context);
+                    foreach (var scriptPath in sqlScripts.Keys)
                     {
-                        _log.Debug($"SQL Datei {scriptPath} für Task '{context.TaskHost.Name}' über Pattern {pattern} gefunden.");
-                        return scriptPath;
+                        if (string.Equals(scriptPath, searchPath, StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            _log.Debug($"SQL Datei {scriptPath} für Task '{context.TaskHost.Name}' über Pattern {pattern} gefunden.");
+                            return scriptPath;
+                        }
                     }
                 }
             }

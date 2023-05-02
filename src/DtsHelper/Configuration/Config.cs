@@ -20,7 +20,7 @@ namespace DtsHelper.Configuration
             SqlRootDirectory = ".",
             SqlFileFilterRegex = "[.]sql$",
             SqlRecursiveFileSearch = true,
-            SqlMappingPatterns = new[] {"<Namespace>/<Package>/<Task>.sql", "<Package>/<Task>.sql", "<Namespace>/<Task>.sql", "<Task>.sql"}
+            SqlMappingPatterns = new[] {"<Namespace>/<Package>/<Task>.sql", "<Package>/<Task>.sql", "<Namespace>/<Task>.sql", "<Task>.sql", "<Namespace>/<Package>/<Variable>.sql", "<Package>/<Variable>.sql", "<Namespace>/<Variable>.sql", "<Variable>.sql"}
         };
         /// <summary>
         ///     The default commands.

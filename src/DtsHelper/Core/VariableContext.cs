@@ -28,14 +28,6 @@ namespace DtsHelper.Core
         public List<ProjectParam> ProjectParams { get; set; }
 
         /// <summary>
-        ///     Gets or sets the task host.
-        /// </summary>
-        /// <value>
-        ///     The task host.
-        /// </value>
-        public TaskHost TaskHost { get; set; }
-
-        /// <summary>
         ///     Gets or sets the variable.
         /// </summary>
         /// <value>

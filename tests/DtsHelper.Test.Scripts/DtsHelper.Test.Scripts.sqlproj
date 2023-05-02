@@ -50,7 +50,7 @@
     <None Include="SubPackage\SqlSubPackage.sql" />
   </ItemGroup>
   <PropertyGroup>
-    <PostBuildEvent>cd "$(SolutionDir)tests\DtsHelper.Test\bin\x64\Debug"
+    <PostBuildEvent>cd "$(SolutionDir)tests\DtsHelper.Test\bin\x86\Debug"
 call DtsHelper.exe --config=config_test.json --run</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">

@@ -322,23 +322,23 @@ namespace DtsHelper.Apps
             }
 
             // dtsSwitchParam.
-            if (_config.Settings.DtsSwitchParam != null && _config.Settings.DtsNamespaceDirectories != null &&
+            if (!string.IsNullOrEmpty(_config.Settings.DtsSwitchParam) && _config.Settings.DtsNamespaceDirectories != null &&
                 _config.Settings.DtsNamespaceDirectories.Length > 1)
             {
                 _log.Debug("SETTING: DtsSwitchParam = " + _config.Settings.DtsSwitchParam);
             }
-            else if (_config.Settings.DtsSwitchParam != null && _config.Settings.DtsNamespaceDirectories == null)
+            else if (!string.IsNullOrEmpty(_config.Settings.DtsSwitchParam) && _config.Settings.DtsNamespaceDirectories == null)
             {
                 throw new InvalidConfigurationException(
                     "DtsSwitchParam ist spezifiziert. Dieser wird jedoch nicht benötigt, da kein DtsNamespaceDirectory spezifiziert ist.");
             }
-            else if (_config.Settings.DtsSwitchParam != null && _config.Settings.DtsNamespaceDirectories != null &&
+            else if (!string.IsNullOrEmpty(_config.Settings.DtsSwitchParam) && _config.Settings.DtsNamespaceDirectories != null &&
                      _config.Settings.DtsNamespaceDirectories.Length == 1)
             {
                 throw new InvalidConfigurationException(
                     "DtsSwitchParam ist spezifiziert. Dieser wird jedoch nicht benötigt, da nur ein DtsNamespaceDirectory spezifiziert ist.");
             }
-            else if (_config.Settings.DtsSwitchParam == null && _config.Settings.DtsNamespaceDirectories != null &&
+            else if (!string.IsNullOrEmpty(_config.Settings.DtsSwitchParam) && _config.Settings.DtsNamespaceDirectories != null &&
                      _config.Settings.DtsNamespaceDirectories.Length > 1)
             {
                 throw new InvalidConfigurationException(

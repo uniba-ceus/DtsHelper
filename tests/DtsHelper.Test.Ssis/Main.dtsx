@@ -7,13 +7,13 @@
   DTS:CreatorName="User"
   DTS:DTSID="{15C626C6-52B0-4B8D-A838-926728F8DEEF}"
   DTS:ExecutableType="Microsoft.Package"
-  DTS:LastModifiedProductVersion="15.0.2000.132"
+  DTS:LastModifiedProductVersion="16.0.1000.6"
   DTS:LocaleID="1031"
   DTS:ObjectName="Main"
   DTS:PackageType="5"
   DTS:ProtectionLevel="0"
-  DTS:VersionBuild="3107"
-  DTS:VersionGUID="{2B49871C-DE15-4126-A65B-C51487D81ED6}">
+  DTS:VersionBuild="3108"
+  DTS:VersionGUID="{F825E350-0E41-4935-9ADF-092C2886A98C}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:Variables />
@@ -358,7 +358,7 @@
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{FD42CA83-B8DA-40D3-9D73-0561AE4326AF}"
-          SQLTask:SqlStatementSource="SELECT 'SqlRootLevel'&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="SELECT 'SqlRootLevel2'&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
@@ -405,12 +405,53 @@
       DTS:ObjectName="Einschränkung 2"
       DTS:To="Package\SubPackage" />
   </DTS:PrecedenceConstraints>
+  <DTS:EventHandlers>
+    <DTS:EventHandler
+      DTS:refId="Package.EventHandlers[OnError]"
+      DTS:CreationName="OnError"
+      DTS:DTSID="{C271D423-58BD-4867-AE29-DB838355A9A5}"
+      DTS:EventID="43"
+      DTS:EventName="OnError"
+      DTS:LocaleID="-1">
+      <DTS:Variables>
+        <DTS:Variable
+          DTS:CreationName=""
+          DTS:Description="Die Weitergabeeigenschaft des Ereignisses."
+          DTS:DTSID="{0050DF59-4BE1-4C26-BD44-DE66BB459D14}"
+          DTS:IncludeInDebugDump="6789"
+          DTS:Namespace="System"
+          DTS:ObjectName="Propagate">
+          <DTS:VariableValue
+            DTS:DataType="11">-1</DTS:VariableValue>
+        </DTS:Variable>
+      </DTS:Variables>
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package.EventHandlers[OnError]\Skripttask"
+          DTS:CreationName="Microsoft.ScriptTask"
+          DTS:Description="Skripttask"
+          DTS:DTSID="{7CB220F8-068A-402F-AC94-6458B9E7A9E4}"
+          DTS:ExecutableType="Microsoft.ScriptTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Skripttask">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <ScriptProject
+              Name="ST_44976b70b14248e396c2df9811fcdc30"
+              VSTAMajorVersion="16"
+              VSTAMinorVersion="0"
+              Language="CSharp" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:EventHandler>
+  </DTS:EventHandlers>
   <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
 <!--Dieser CDATA-Abschnitt enthält die Layoutinformationen des Pakets, z.B. Informationen wie X-/Y-Koordinaten, Breite und Höhe.-->
 <!--Wenn Sie diesen Abschnitt manuell ändern und Ihnen ein Fehler unterläuft, können Sie ihn löschen. -->
 <!--Das Paket kann zwar weiterhin normal geladen werden, aber frühere Layoutinformationen gehen verloren, und die Elemente auf der Entwurfsoberfläche werden vom Designer automatisch neu angeordnet.-->
 <Objects
-  Version="sql12">
+  Version="8">
   <!--Jeder darunter liegende Knoten enthält Eigenschaften, die sich nicht auf das Laufzeitverhalten auswirken.-->
   <Package
     design-time-name="Package">
@@ -442,7 +483,7 @@
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="350,236"
+          PanelSize="350,237"
           Size="350,280"
           Id="Package\Sequenzcontainer2"
           TopLeft="746.5,173.5" />
@@ -523,5 +564,17 @@
       </GraphLayout>
     </LayoutInfo>
   </Package>
+  <DtsEventHandler
+    design-time-name="Package.EventHandlers[OnError]">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph">
+        <NodeLayout
+          Size="127,42"
+          Id="Package.EventHandlers[OnError]\Skripttask"
+          TopLeft="231,151" />
+      </GraphLayout>
+    </LayoutInfo>
+  </DtsEventHandler>
 </Objects>]]></DTS:DesignTimeProperties>
 </DTS:Executable>
