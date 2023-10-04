@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="SqlRootLevel.sql" />
+    <None Include="Test Task With Blanks.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Main\SqlSeq1.sql" />

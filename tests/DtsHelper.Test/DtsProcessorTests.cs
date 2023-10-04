@@ -3,6 +3,7 @@
 
 namespace DtsHelper.Test
 {
+    using System.IO;
     using System.Linq;
     using DtsHelper.Configuration;
     using DtsHelper.Core;
@@ -43,6 +44,27 @@ namespace DtsHelper.Test
             dtsProcessor.SavePackages();
 
             Assert.IsTrue(true);
+        }
+
+        
+        [TestMethod]
+        public void TestSearchPathCombine()
+        { 
+            var root = "Root";
+            var patterns = new []{"<Namespace>/<Package>/<Task>.sql", "<Package>/<Task>.sql", "<Namespace>/<Task>.sql", "<Task>.sql"};
+            var ns = "TestNamespace";
+            var pck = "TestPackage";
+            var taskName = "Test Task";
+
+            foreach(var p in patterns)
+            {
+                var pattern = p;
+                pattern = pattern.Replace("<Namespace>", ns);
+                pattern = pattern.Replace("<Package>", pck);
+                pattern = pattern.Replace("<Task>",taskName);
+                var path = Path.Combine(root, pattern);
+                Assert.IsTrue(!string.IsNullOrEmpty(path));
+            }
         }
 
         private Config ReadTestConfig()

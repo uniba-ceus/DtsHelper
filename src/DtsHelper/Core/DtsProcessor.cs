@@ -19,13 +19,13 @@ namespace DtsHelper.Core
     using PoorMansTSqlFormatterLib.Formatters;
 
     /// <summary>
-    ///     Processes all dtsx files and applies changes.
+    /// Processes all dtsx files and applies changes.
     /// </summary>
     /// <remarks>
-    ///     Note for structure:
-    ///     1. level: variant folder =&gt; equals Namespace.
-    ///     2. level: sub directory =&gt; equals package name.
-    ///     3. level: sql file name =&gt; equals SqlTask name or Variable name.
+    /// Note for structure:
+    /// 1. level: variant folder =&gt; equals Namespace.
+    /// 2. level: sub directory =&gt; equals package name.
+    /// 3. level: sql file name =&gt; equals SqlTask name or Variable name.
     /// </remarks>
     public class DtsProcessor
     {
@@ -41,7 +41,7 @@ namespace DtsHelper.Core
         private List<string> _dtsxFiles;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="DtsProcessor" /> class.
+        /// Initializes a new instance of the <see cref="DtsProcessor" /> class.
         /// </summary>
         /// <param name="config">The configuration.</param>
         public DtsProcessor(Config config)
@@ -51,7 +51,7 @@ namespace DtsHelper.Core
         }
 
         /// <summary>
-        ///     Changes the name of the application in database connections.
+        /// Changes the name of the application in database connections.
         /// </summary>
         public void ChangeAppName()
         {
@@ -134,7 +134,7 @@ namespace DtsHelper.Core
         }
 
         /// <summary>
-        ///     Check whether project contains a parameter for switching variant.
+        /// Check whether project contains a parameter for switching variant.
         /// </summary>
         /// <returns>True in case the switch parameter exists.</returns>
         public bool CheckProjectContainsSwitchParam()
@@ -148,7 +148,7 @@ namespace DtsHelper.Core
         }
 
         /// <summary>
-        ///     Converts all sql files from ASCII/ANSI/Codepage 1252 to UTF-8 with BOM.
+        /// Converts all sql files from ASCII/ANSI/Codepage 1252 to UTF-8 with BOM.
         /// </summary>
         /// <param name="config">The configuration.</param>
         public void ConvertToUTF8(Config config)
@@ -165,11 +165,11 @@ namespace DtsHelper.Core
         }
 
         /// <summary>
-        ///     Creates for each SqlTask variables for each variant. Namespace will be determined from directory name.
+        /// Creates for each SqlTask variables for each variant. Namespace will be determined from directory name.
         /// </summary>
         /// <remarks>
-        ///     SwitchParam determines which SSIS parameter will be used for identification of variable. If not SwitchParam is
-        ///     defined a generic one will be used.
+        /// SwitchParam determines which SSIS parameter will be used for identification of variable. If not SwitchParam is
+        /// defined a generic one will be used.
         /// </remarks>
         public void CreateVariables()
         {
@@ -235,7 +235,7 @@ namespace DtsHelper.Core
         }
 
         /// <summary>
-        ///     Deletes all variables in specific namespace.
+        /// Deletes all variables in specific namespace.
         /// </summary>
         public void DeleteVariables()
         {
@@ -291,7 +291,7 @@ namespace DtsHelper.Core
         }
 
         /// <summary>
-        ///     Format sql files with TSqlFormatter.
+        /// Format sql files with TSqlFormatter.
         /// </summary>
         /// <param name="config">The configuration.</param>
         public void FormatSqlFiles(Config config)
@@ -326,7 +326,7 @@ namespace DtsHelper.Core
         }
 
         /// <summary>
-        ///     Inject sql file contents in SqlTask with Direct as input.
+        /// Inject sql file contents in SqlTask with Direct as input.
         /// </summary>
         public void InjectDirect()
         {
@@ -387,8 +387,8 @@ namespace DtsHelper.Core
         }
 
         /// <summary>
-        ///     Inject sql file content in variables for SqlTasks. This will search for each SqlTask with Variable input for
-        ///     mapping variable with correct namespace.
+        /// Inject sql file content in variables for SqlTasks. This will search for each SqlTask with Variable input for
+        /// mapping variable with correct namespace.
         /// </summary>
         public void InjectVariables()
         {
@@ -447,7 +447,7 @@ namespace DtsHelper.Core
         }
 
         /// <summary>
-        ///     Loads all packages inclusive content.
+        /// Loads all packages inclusive content.
         /// </summary>
         public List<PackageContext> LoadPackages()
         {
@@ -478,7 +478,7 @@ namespace DtsHelper.Core
         }
 
         /// <summary>
-        ///     Load all project params from project file.
+        /// Load all project params from project file.
         /// </summary>
         /// <returns>List of project parameter.</returns>
         public List<ProjectParam> LoadProjectParams()
@@ -570,7 +570,7 @@ namespace DtsHelper.Core
         }
 
         /// <summary>
-        ///     Save and overwrites all packages.
+        /// Save and overwrites all packages.
         /// </summary>
         public void SavePackages()
         {
@@ -588,7 +588,7 @@ namespace DtsHelper.Core
         }
 
         /// <summary>
-        ///     Changes input of all SqlTasks with FileConnection to Variable.
+        /// Changes input of all SqlTasks with FileConnection to Variable.
         /// </summary>
         public void SetFileConToVariable()
         {
@@ -621,11 +621,11 @@ namespace DtsHelper.Core
         }
 
         /// <summary>
-        ///     Creates a search path for given pattern and variable.
+        /// Creates a search path for given pattern and variable.
         /// </summary>
         /// <remarks>
-        ///     Sample for pattern:
-        ///     <![CDATA[
+        /// Sample for pattern:
+        /// <![CDATA[
         /// "<Namespace>/<Package>/<Task>.sql"
         /// "<Package>/<Task>.sql",
         /// "<Namespace>/<Task>.sql"
@@ -646,18 +646,25 @@ namespace DtsHelper.Core
                 pattern = pattern.Replace($"<ProjectParam:{param.Name}>", param.Value);
             }
 
-            var path = Path.Combine(_config.Settings.SqlRootDirectory, pattern);
-
-            Trace.TraceInformation("BuildSearchPath - END");
-            return new FileInfo(path).FullName;
+            try
+            {
+                var path = Path.Combine(_config.Settings.SqlRootDirectory, pattern);
+                Trace.TraceInformation("BuildSearchPath - BEGIN");
+                return new FileInfo(path).FullName;
+            }
+            catch
+            {
+                _log.Error($"Invalid path! SqlRootDirectory: {_config.Settings.SqlRootDirectory}, Pattern: {pattern}");
+                throw;
+            }
         }
 
         /// <summary>
-        ///     Creates a search path for given pattern and task.
+        /// Creates a search path for given pattern and task.
         /// </summary>
         /// <remarks>
-        ///     Sample for pattern:
-        ///     <![CDATA[
+        /// Sample for pattern:
+        /// <![CDATA[
         /// "<Namespace>/<Package>/<Task>.sql"
         /// "<Package>/<Task>.sql",
         /// "<Namespace>/<Task>.sql"
@@ -678,14 +685,21 @@ namespace DtsHelper.Core
                 pattern = pattern.Replace($"<ProjectParam:{param.Name}>", param.Value);
             }
 
-            var path = Path.Combine(_config.Settings.SqlRootDirectory, pattern);
-
-            Trace.TraceInformation("BuildSearchPath - BEGIN");
-            return new FileInfo(path).FullName;
+            try
+            {
+                var path = Path.Combine(_config.Settings.SqlRootDirectory, pattern);
+                Trace.TraceInformation("BuildSearchPath - BEGIN");
+                return new FileInfo(path).FullName;
+            }
+            catch
+            {
+                _log.Error($"Invalid path! SqlRootDirectory: {_config.Settings.SqlRootDirectory}, Pattern: {pattern}");
+                throw;
+            }
         }
 
         /// <summary>
-        ///     Searches for SqlTasks recursively.
+        /// Searches for SqlTasks recursively.
         /// </summary>
         /// <param name="parentObject">Parent object..</param>
         /// <param name="onlyActive">Only active tasks will be searched.</param>
@@ -745,7 +759,7 @@ namespace DtsHelper.Core
         }
 
         /// <summary>
-        ///     Finds the sql files.
+        /// Finds the sql files.
         /// </summary>
         /// <returns>List of sql file names.</returns>
         private List<string> FindSqlFiles()
@@ -786,7 +800,7 @@ namespace DtsHelper.Core
         }
 
         /// <summary>
-        ///     Finds the connection manager files.
+        /// Finds the connection manager files.
         /// </summary>
         /// <returns>List of conmgr file names.</returns>
         private List<string> FindConmgrFiles()
@@ -823,7 +837,7 @@ namespace DtsHelper.Core
         }
 
         /// <summary>
-        ///     Finds the package files.
+        /// Finds the package files.
         /// </summary>
         /// <returns>List of package file names.</returns>
         private List<string> FindPackageFiles()
@@ -860,7 +874,7 @@ namespace DtsHelper.Core
         }
 
         /// <summary>
-        ///     Load all sql files in temporary dictionary.
+        /// Load all sql files in temporary dictionary.
         /// </summary>
         /// <returns>Dictionary with file name as keys and content as values.</returns>
         private Dictionary<string, string> LoadSQLFiles()
@@ -893,12 +907,12 @@ namespace DtsHelper.Core
         }
 
         /// <summary>
-        ///     Searches for mapping sql file for variable.
+        /// Searches for mapping sql file for variable.
         /// </summary>
         /// <param name="sqlScripts">Found sql file.</param>
         /// <param name="context">Context of variable.</param>
         /// <returns>
-        ///     Path to sql file or null.
+        /// Path to sql file or null.
         /// </returns>
         private string SearchSqlScriptPath(Dictionary<string, string> sqlScripts, VariableContext context)
         {
@@ -913,15 +927,22 @@ namespace DtsHelper.Core
             {
                 foreach (var pattern in variablePatterns)
                 {
-                    var searchPath = BuildSearchPath(pattern, context);
-                    foreach (var scriptPath in sqlScripts.Keys)
+                    try
                     {
-                        if (string.Equals(scriptPath, searchPath, StringComparison.CurrentCultureIgnoreCase))
+                        var searchPath = BuildSearchPath(pattern, context);
+                        foreach (var scriptPath in sqlScripts.Keys)
                         {
-                            _log.Debug(
-                                $"SQL Datei {scriptPath} für Variable '{context.Variable.Namespace}::{context.Variable.Name}' über Pattern {pattern} gefunden.");
-                            return scriptPath;
+                            if (string.Equals(scriptPath, searchPath, StringComparison.CurrentCultureIgnoreCase))
+                            {
+                                _log.Debug(
+                                    $"SQL Datei {scriptPath} für Variable '{context.Variable.Namespace}::{context.Variable.Name}' über Pattern {pattern} gefunden.");
+                                return scriptPath;
+                            }
                         }
+                    }
+                    catch (Exception ex)
+                    {
+                        _log.Error("Search sql script path has failed:", ex);
                     }
                 }
             }
@@ -931,12 +952,12 @@ namespace DtsHelper.Core
         }
 
         /// <summary>
-        ///     Searches for mapping sql file for SqlTask.
+        /// Searches for mapping sql file for SqlTask.
         /// </summary>
         /// <param name="sqlScripts">Found sql file.</param>
         /// <param name="context">Context of task.</param>
         /// <returns>
-        ///     Path to sql file or null.
+        /// Path to sql file or null.
         /// </returns>
         private string SearchSqlScriptPath(Dictionary<string, string> sqlScripts, TaskContext context)
         {
@@ -951,14 +972,21 @@ namespace DtsHelper.Core
             {
                 foreach (var pattern in _config.Settings.SqlMappingPatterns)
                 {
-                    var searchPath = BuildSearchPath(pattern, context);
-                    foreach (var scriptPath in sqlScripts.Keys)
+                    try
                     {
-                        if (string.Equals(scriptPath, searchPath, StringComparison.CurrentCultureIgnoreCase))
+                        var searchPath = BuildSearchPath(pattern, context);
+                        foreach (var scriptPath in sqlScripts.Keys)
                         {
-                            _log.Debug($"SQL Datei {scriptPath} für Task '{context.TaskHost.Name}' über Pattern {pattern} gefunden.");
-                            return scriptPath;
+                            if (string.Equals(scriptPath, searchPath, StringComparison.CurrentCultureIgnoreCase))
+                            {
+                                _log.Debug($"SQL Datei {scriptPath} für Task '{context.TaskHost.Name}' über Pattern {pattern} gefunden.");
+                                return scriptPath;
+                            }
                         }
+                    }
+                    catch (Exception ex)
+                    {
+                        _log.Error("Search sql script path has failed:", ex);
                     }
                 }
             }

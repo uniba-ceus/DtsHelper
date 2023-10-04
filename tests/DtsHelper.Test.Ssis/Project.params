@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <SSIS:Parameters xmlns:SSIS="www.microsoft.com/SqlServer/SSIS">
   <SSIS:Parameter
-    SSIS:Name="Variant">
+    SSIS:Name="Uni">
     <SSIS:Properties>
       <SSIS:Property
         SSIS:Name="ID">{f0a2a734-3a82-4de7-872d-74fab41c38f5}</SSIS:Property>

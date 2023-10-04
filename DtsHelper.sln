@@ -11,10 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{721655C6
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libs", "libs", "{F985A775-4DAA-444F-BBB8-EF2EB1C2DA06}"
 EndProject
-Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "DtsHelper.Test.Ssis", "tests\DtsHelper.Test.Ssis\DtsHelper.Test.Ssis.dtproj", "{66A78379-8370-4ECE-BC19-D45D4247DE07}"
-	ProjectSection(ProjectDependencies) = postProject
-		{F86DAF83-19BC-4B80-978C-DB83B9402065} = {F86DAF83-19BC-4B80-978C-DB83B9402065}
-	EndProjectSection
+Project("{C9674DCB-5085-4A16-B785-4C70DD1589BD}") = "DtsHelper.Test.Ssis", "tests\DtsHelper.Test.Ssis\DtsHelper.Test.Ssis.dtproj", "{66A78379-8370-4ECE-BC19-D45D4247DE07}"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "DtsHelper.Test.Scripts", "tests\DtsHelper.Test.Scripts\DtsHelper.Test.Scripts.sqlproj", "{F86DAF83-19BC-4B80-978C-DB83B9402065}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -108,7 +105,7 @@ Global
 		{592A0957-E46B-40FD-A613-5FAD0373F338} = {F985A775-4DAA-444F-BBB8-EF2EB1C2DA06}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {A98413AB-2184-414F-A1D1-883BF520F346}
 		VisualSVNWorkingCopyRoot = .
+		SolutionGuid = {A98413AB-2184-414F-A1D1-883BF520F346}
 	EndGlobalSection
 EndGlobal
